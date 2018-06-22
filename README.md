@@ -16,7 +16,6 @@ JUnit done well. It´s a collection of JUnit extensions and utilities to help de
 - Messaging Tests:
    - Reactor Client Tests
    - GRPC Client Tests
-   - *
 - Clean Up strategies
 - Logger Config strategies
 - Test execution logging
