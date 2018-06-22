@@ -82,8 +82,9 @@
         <module>core</module>
         <module>dagger-runner</module>
         <module>guice-runner</module>
-        <module>cleanup</module>
-		<module>loader</module>
+		<module>spring-runner</module>
+        <module>kafka</module>
+		<module>zookeeper</module>
 		<module>reactor</module>
 		<module>rest</module>
 	</modules>
