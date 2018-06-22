@@ -10,13 +10,13 @@ JUnit done well. It´s a collection of JUnit extensions and utilities to help de
 - Kafka
 - ZooKeeper
 - Reactor
-- GRPC
+- gRPC
 
 ## Features to be supported
 - REST Tests
 - Messaging Tests:
    - Reactor Client Tests
-   - GRPC Client Tests
+   - gRPC Client Tests
 - Clean Up strategies
 - Logger Config strategies
 - Test execution logging
