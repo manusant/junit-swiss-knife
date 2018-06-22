@@ -1,4 +1,4 @@
-package com.beerboy.junit.core;
+package com.beerboy.junit.core.api;
 
 /**
  * @author manusant
