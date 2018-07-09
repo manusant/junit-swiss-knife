@@ -36,19 +36,6 @@ public class GuiceSwissKnifeRunner extends SwissKnifeRunner {
         bootstrap();
     }
 
-    private AbstractModule resolveModule() {
-        TestClass testClass = getTestClass();
-        MainModule mainModule = testClass.getAnnotation(MainModule.class);
-        if (mainModule != null) {
-            try {
-                return mainModule.moduleClass().newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
-                LOGGER.error("Error while trying to instantiate main module class", e);
-            }
-        }
-        throw new IllegalArgumentException("A main Guice Module is required when using Guice-Runner");
-    }
-
     private void bootstrap() {
         LOGGER.debug("Bootstraping Guice SwissKnifeRunner");
         if (injector == null) {
@@ -61,6 +48,19 @@ public class GuiceSwissKnifeRunner extends SwissKnifeRunner {
                     .map(binding -> binding.getProvider().get())
                     .forEach(Starter::start);
         }
+    }
+
+    private AbstractModule resolveModule() {
+        TestClass testClass = getTestClass();
+        MainModule mainModule = testClass.getAnnotation(MainModule.class);
+        if (mainModule != null) {
+            try {
+                return mainModule.moduleClass().newInstance();
+            } catch (InstantiationException | IllegalAccessException e) {
+                LOGGER.error("Error while trying to instantiate main module class", e);
+            }
+        }
+        throw new IllegalArgumentException("A main Guice Module is required when using Guice-Runner");
     }
 
     @Override
