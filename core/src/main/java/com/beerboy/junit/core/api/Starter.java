@@ -4,7 +4,7 @@ package com.beerboy.junit.core.api;
  * @author manusant
  */
 @FunctionalInterface
-public interface InstanceResolver {
+public interface Starter {
 
-    <T> T resolve(Class<T> clazz);
+    void start();
 }

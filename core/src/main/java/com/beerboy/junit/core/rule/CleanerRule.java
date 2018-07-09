@@ -1,22 +1,26 @@
 package com.beerboy.junit.core.rule;
 
 import com.beerboy.junit.core.annotation.CleanUp;
+import com.beerboy.junit.core.annotation.Messaging;
 import com.beerboy.junit.core.annotation.Storage;
 import com.beerboy.junit.core.api.Cleaner;
-import com.beerboy.scanner.ClassScanner;
-import com.beerboy.scanner.ScanResult;
-
+import com.beerboy.scanner.predicate.AnnotatedClassPredicate;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author manusant
  */
 public class CleanerRule implements TestRule {
+
+    private final Set<Cleaner> cleaners;
+
+    public CleanerRule(Set<Cleaner> cleaners) {
+        this.cleaners = cleaners;
+    }
 
     @Override
     public Statement apply(final Statement base, final Description description) {
@@ -25,24 +29,18 @@ public class CleanerRule implements TestRule {
             public void evaluate() throws Throwable {
                 CleanUp annotation = description.getAnnotation(CleanUp.class);
 
-                if (annotation != null) {
-                    ScanResult scanResult = ClassScanner.scan(ClassLoader.getSystemClassLoader(), "com.beerboy.junit");
-
+                if (annotation != null && cleaners != null) {
                     if (annotation.storage().beforeClass() || annotation.storage().beforeTest()) {
-
-                        Set<Class> storageCleaners = scanResult
-                                .stream()
-                                .implementers(Cleaner.class)
-                                .annotatedWith(Storage.class)
-                                .collect(Collectors.toSet());
-
-                       // Generic clean rule implementation goes here
+                        cleaners.stream()
+                                .filter(cleaner -> new AnnotatedClassPredicate(Storage.class).test(cleaner.getClass()))
+                                .forEach(Cleaner::clean);
                     }
                     if (annotation.messages().beforeClass() || annotation.messages().beforeTest()) {
-                        // Generic clean rule implementation goes here
+                        cleaners.stream()
+                                .filter(cleaner -> new AnnotatedClassPredicate(Messaging.class).test(cleaner.getClass()))
+                                .forEach(Cleaner::clean);
                     }
                 }
-
                 base.evaluate();
             }
         };
