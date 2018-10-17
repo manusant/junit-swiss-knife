@@ -2,6 +2,7 @@
 JUnit done well. It´s a collection of JUnit extensions and utilities to help developing tests with ease.
 
 ## Runners to be supported:
+- Standalone
 - Guice
 - Dagger 2
 - Spring
