@@ -5,6 +5,7 @@ JUnit done well. It´s a collection of JUnit extensions and utilities to help de
 - Guice
 - Dagger 2
 - Spring
+- CDI
 
 ## Platform Components to be supported
 - Kafka
