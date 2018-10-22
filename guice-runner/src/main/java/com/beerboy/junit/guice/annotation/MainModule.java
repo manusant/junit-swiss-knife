@@ -1,6 +1,6 @@
 package com.beerboy.junit.guice.annotation;
 
-import com.google.inject.AbstractModule;
+import com.beerboy.junit.guice.di.MainModuleIT;
 
 import java.lang.annotation.*;
 
@@ -12,5 +12,5 @@ import java.lang.annotation.*;
 @Inherited
 public @interface MainModule {
 
-    Class<? extends AbstractModule> moduleClass();
+    Class<? extends MainModuleIT> moduleClass();
 }

@@ -1,14 +1,15 @@
 package com.beerboy.junit.guice;
 
-import com.beerboy.junit.core.api.Cleaner;
 import com.beerboy.junit.core.api.Loader;
+import com.beerboy.junit.core.api.MessagingCleaner;
 import com.beerboy.junit.core.api.Starter;
+import com.beerboy.junit.core.api.StorageCleaner;
 import com.beerboy.junit.core.rule.CleanerRule;
 import com.beerboy.junit.core.rule.LoaderRule;
 import com.beerboy.junit.core.rule.StarterRule;
 import com.beerboy.junit.core.runner.SwissKnifeRunner;
 import com.beerboy.junit.guice.annotation.MainModule;
-import com.google.inject.AbstractModule;
+import com.beerboy.junit.guice.di.MainModuleIT;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.TypeLiteral;
@@ -39,8 +40,9 @@ public class GuiceSwissKnifeRunner extends SwissKnifeRunner {
     private void bootstrap() {
         LOGGER.debug("Bootstraping Guice SwissKnifeRunner");
         if (injector == null) {
-            AbstractModule mainModule = resolveModule();
+            MainModuleIT mainModule = resolveModule();
             injector = Guice.createInjector(mainModule);
+            mainModule.onBind(injector);
             // Call starters here
 
             injector.findBindingsByType(TypeLiteral.get(Starter.class))
@@ -50,7 +52,7 @@ public class GuiceSwissKnifeRunner extends SwissKnifeRunner {
         }
     }
 
-    private AbstractModule resolveModule() {
+    private MainModuleIT resolveModule() {
         TestClass testClass = getTestClass();
         MainModule mainModule = testClass.getAnnotation(MainModule.class);
         if (mainModule != null) {
@@ -92,11 +94,16 @@ public class GuiceSwissKnifeRunner extends SwissKnifeRunner {
 
     @Override
     protected Optional<TestRule> cleanerRule() {
-        Set<Cleaner> cleaners = injector.findBindingsByType(TypeLiteral.get(Cleaner.class))
+        Set<MessagingCleaner> messagingCleaners = injector.findBindingsByType(TypeLiteral.get(MessagingCleaner.class))
                 .stream()
                 .map(binding -> binding.getProvider().get())
                 .collect(Collectors.toSet());
 
-        return cleaners.isEmpty() ? Optional.empty() : Optional.of(new CleanerRule(cleaners));
+        Set<StorageCleaner> storageCleaners = injector.findBindingsByType(TypeLiteral.get(StorageCleaner.class))
+                .stream()
+                .map(binding -> binding.getProvider().get())
+                .collect(Collectors.toSet());
+
+        return messagingCleaners.isEmpty() &&  storageCleaners.isEmpty()? Optional.empty() : Optional.of(new CleanerRule(messagingCleaners,storageCleaners));
     }
 }
