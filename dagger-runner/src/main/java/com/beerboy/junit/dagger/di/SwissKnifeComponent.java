@@ -1,8 +1,7 @@
 package com.beerboy.junit.dagger.di;
 
-import com.beerboy.junit.core.api.Cleaner;
-import com.beerboy.junit.core.api.Loader;
-import com.beerboy.junit.core.api.Starter;
+import com.beerboy.junit.core.annotation.Messaging;
+import com.beerboy.junit.core.api.*;
 import dagger.Component;
 
 import java.util.Set;
@@ -14,5 +13,7 @@ public interface SwissKnifeComponent {
 
     Set<Loader> getLoaders();
 
-    Set<Cleaner> getCleaners();
+    Set<MessagingCleaner> getMessagingCleaners();
+
+    Set<StorageCleaner> getStorageCleaners();
  }

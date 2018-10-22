@@ -1,8 +1,8 @@
 package com.beerboy.junit.dagger.runner;
 
-import com.beerboy.junit.core.api.Cleaner;
-import com.beerboy.junit.core.api.Loader;
-import com.beerboy.junit.core.api.Starter;
+import com.beerboy.junit.core.annotation.Messaging;
+import com.beerboy.junit.core.annotation.Storage;
+import com.beerboy.junit.core.api.*;
 import com.beerboy.junit.core.rule.CleanerRule;
 import com.beerboy.junit.core.rule.LoaderRule;
 import com.beerboy.junit.core.rule.StarterRule;
@@ -73,8 +73,11 @@ public class DaggerSwissKnifeRunner extends SwissKnifeRunner {
 
     @Override
     protected Optional<TestRule> cleanerRule() {
-        Set<Cleaner> cleaners = swissKnifeComponent.getCleaners();
+        Set<MessagingCleaner> messagingCleaners= swissKnifeComponent.getMessagingCleaners();
+        Set<StorageCleaner> storageCleaners = swissKnifeComponent.getStorageCleaners();
 
-        return cleaners.isEmpty() ? Optional.empty() : Optional.of(new CleanerRule(cleaners));
+
+
+        return messagingCleaners.isEmpty() &&  storageCleaners.isEmpty()? Optional.empty() : Optional.of(new CleanerRule(messagingCleaners,storageCleaners));
     }
 }

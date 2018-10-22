@@ -1,8 +1,8 @@
 package com.beerboy.junit.dagger.di;
 
-import com.beerboy.junit.core.api.Cleaner;
-import com.beerboy.junit.core.api.Loader;
-import com.beerboy.junit.core.api.Starter;
+import com.beerboy.junit.core.annotation.Messaging;
+import com.beerboy.junit.core.annotation.Storage;
+import com.beerboy.junit.core.api.*;
 import dagger.Module;
 import dagger.Provides;
 
@@ -23,7 +23,12 @@ public class SwissKnifeModule {
     }
 
     @Provides
-    public Set<Cleaner> cleaners(){
+    public Set<MessagingCleaner> storageCleaners(){
+        return new HashSet<>();
+    }
+
+    @Provides
+    public Set<StorageCleaner> messagingCleaners(){
         return new HashSet<>();
     }
 }
