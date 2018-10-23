@@ -65,27 +65,27 @@
             <p>Use <code>@Inject</code> to annotate the constructor that Dagger should use to create instances of a class. When a new instance is requested, Dagger will obtain the required parameters values and invoke this constructor.</p>
 
             <pre class="prettyprint">
-                class Thermosiphon implements Pump {
-                  private final Heater heater;
+class Thermosiphon implements Pump {
+  private final Heater heater;
 
-                  @Inject
-                  Thermosiphon(Heater heater) {
-                    this.heater = heater;
-                  }
+  @Inject
+  Thermosiphon(Heater heater) {
+    this.heater = heater;
+  }
 
-                     ...
-                }
+     ...
+}
             </pre>
 
             <p>Dagger can inject fields directly. In this example it obtains a <code>Heater</code> instance for the <code>heater</code> field and a <code>Pump</code> instance for the <code>pump</code> field.</p>
 
             <pre class="prettyprint">
-                class CoffeeMaker {
-                  @Inject Heater heater;
-                  @Inject Pump pump;
+class CoffeeMaker {
+  @Inject Heater heater;
+  @Inject Pump pump;
 
-                  ...
-                }
+  ...
+}
             </pre>
 
             <p>If your class has <code>@Inject</code>-annotated fields but no <code>@Inject</code>-annotated constructor, Dagger will use a no-argument constructor if it exists. Classes that lack <code>@Inject</code> annotations cannot be constructed by Dagger.</p>
@@ -358,32 +358,34 @@ public class CoffeeAppModule {
 
             <p>This JUnit test overrides <code>DripCoffeeModule</code>'s binding for <code>Heater</code> with a mock object from <a href="http://mockito.googlecode.com/">Mockito</a>. The mock gets injected into the <code>CoffeeMaker</code> and also into the test.</p>
 
-            <pre class="prettyprint">public class CoffeeMakerTest {
-              @Inject CoffeeMaker coffeeMaker;
-              @Inject Heater heater;
+            <pre class="prettyprint">
+public class CoffeeMakerTest {
+  @Inject CoffeeMaker coffeeMaker;
+  @Inject Heater heater;
 
-              @Before public void setUp() {
-                ObjectGraph.create(new TestModule()).inject(this);
-              }
+  @Before public void setUp() {
+    ObjectGraph.create(new TestModule()).inject(this);
+  }
 
-              @Module(
-                  includes = DripCoffeeModule.class,
-                  injects = CoffeeMakerTest.class,
-                  overrides = true
-              )
-              static class TestModule {
-                @Provides @Singleton Heater provideHeater() {
-                  return Mockito.mock(Heater.class);
-                }
-              }
+  @Module(
+      includes = DripCoffeeModule.class,
+      injects = CoffeeMakerTest.class,
+      overrides = true
+  )
+  static class TestModule {
+    @Provides @Singleton Heater provideHeater() {
+      return Mockito.mock(Heater.class);
+    }
+  }
 
-              @Test public void testHeaterIsTurnedOnAndThenOff() {
-                Mockito.when(heater.isHot()).thenReturn(true);
-                coffeeMaker.brew();
-                Mockito.verify(heater, Mockito.times(1)).on();
-                Mockito.verify(heater, Mockito.times(1)).off();
-              }
-            }</pre>
+  @Test public void testHeaterIsTurnedOnAndThenOff() {
+    Mockito.when(heater.isHot()).thenReturn(true);
+    coffeeMaker.brew();
+    Mockito.verify(heater, Mockito.times(1)).on();
+    Mockito.verify(heater, Mockito.times(1)).off();
+  }
+}
+            </pre>
 
             <p>Overrides are best suited for small variations on the application:</p>
             <ul>
@@ -400,17 +402,17 @@ public class CoffeeAppModule {
 
             <h4>Maven</h4>
             <pre class="prettyprint">
-                &lt;dependency>
-                  &lt;groupId>com.squareup.dagger&lt;/groupId>
-                  &lt;artifactId>dagger&lt;/artifactId>
-                  &lt;version><span class="version pln"><em>(insert latest version)</em></span>&lt;/version>
-                &lt;/dependency>
-                &lt;dependency>
-                  &lt;groupId>com.squareup.dagger&lt;/groupId>
-                  &lt;artifactId>dagger-compiler&lt;/artifactId>
-                  &lt;version><span class="version pln"><em>(insert latest version)</em></span>&lt;/version>
-                  &lt;optional>true&lt;/optional>
-                &lt;/dependency>
+&lt;dependency>
+  &lt;groupId>com.squareup.dagger&lt;/groupId>
+  &lt;artifactId>dagger&lt;/artifactId>
+  &lt;version><span class="version pln"><em>(insert latest version)</em></span>&lt;/version>
+&lt;/dependency>
+&lt;dependency>
+  &lt;groupId>com.squareup.dagger&lt;/groupId>
+  &lt;artifactId>dagger-compiler&lt;/artifactId>
+  &lt;version><span class="version pln"><em>(insert latest version)</em></span>&lt;/version>
+  &lt;optional>true&lt;/optional>
+&lt;/dependency>
             </pre>
 
             <h3 id="upgrading">Upgrading from Guice</h3>
@@ -430,19 +432,19 @@ public class CoffeeAppModule {
 
             <h3 id="license">License</h3>
             <pre>
-                Copyright 2018 Manuel Santos.
+Copyright 2018 Manuel Santos.
 
-                Licensed under the Apache License, Version 2.0 (the "License");
-                you may not use this file except in compliance with the License.
-                You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-                   http://www.apache.org/licenses/LICENSE-2.0
+   http://www.apache.org/licenses/LICENSE-2.0
 
-                Unless required by applicable law or agreed to in writing, software
-                distributed under the License is distributed on an "AS IS" BASIS,
-                WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                See the License for the specific language governing permissions and
-                limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
             </pre>
           </div>
           <div class="span3">
