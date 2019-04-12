@@ -7,6 +7,8 @@ JUnit done well. It´s a collection of JUnit extensions and utilities to help de
 - Dagger 2
 - Spring
 - CDI
+- OSGI
+- AEM
 
 ## Platform Components to be supported
 - Kafka
